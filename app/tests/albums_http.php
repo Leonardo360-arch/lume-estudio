@@ -98,7 +98,7 @@ try {
     $pdo->prepare("UPDATE admins SET status_admin='PENDENTE' WHERE id=?")->execute([$accounts['admin']]);
     $pendingToken=album_csrf(album_http($base,'/login.php',$jars['admin']));
     $pendingLogin=album_http($base,'/actions/login.php',$jars['admin'],'POST',['_csrf'=>$pendingToken,'email'=>'admin@example.test','senha'=>$fixturePassword]);
-    album_check(str_contains($pendingLogin['headers']['location']??'','erro=pendente'),'First administrator bypassed approval by numeric ID.');
+    album_check(str_contains($pendingLogin['headers']['location']??'','erro=pendente'),'Pending admin login rejected incorrectly: status='.$pendingLogin['status'].' location='.($pendingLogin['headers']['location']??'(none)'));
     album_check(album_http($base,'/album-admin.php',$jars['admin'])['status']===302,'Pending administrator accessed album management.');
     $pdo->prepare("UPDATE admins SET status_admin='APROVADO' WHERE id=?")->execute([$accounts['admin']]);
     $tokens=[];

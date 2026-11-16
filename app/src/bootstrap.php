@@ -12,7 +12,14 @@ if (file_exists($autoloadPath)) {
 }
 
 if (class_exists(Dotenv\Dotenv::class)) {
-    Dotenv\Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
+    // Some SAPIs omit process variables from $_ENV/$_SERVER. Read getenv()
+    // when checking immutability so .env never overrides Docker/CI settings.
+    // This adapter is reader-only: no process-wide putenv() writes are used.
+    $environmentRepository = Dotenv\Repository\RepositoryBuilder::createWithDefaultAdapters()
+        ->addReader(Dotenv\Repository\Adapter\PutenvAdapter::class)
+        ->immutable()
+        ->make();
+    Dotenv\Dotenv::create($environmentRepository, dirname(__DIR__))->safeLoad();
 }
 
 date_default_timezone_set(env('APP_TIMEZONE', 'America/Sao_Paulo'));
