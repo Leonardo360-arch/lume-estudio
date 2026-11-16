@@ -1,0 +1,11 @@
+Options -Indexes
+DirectoryIndex index.php index.html
+
+<FilesMatch "(?i)(^\.|\.(sql|sqlite|db|log|bak|ini|ya?ml|lock)$|^composer\.(json|lock)$|^Dockerfile$|^corrigir-banco\.php$)">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(?:src|vendor|scripts|tests|storage|cache|database|docker)(?:/|$) - [F,L,NC]
+</IfModule>

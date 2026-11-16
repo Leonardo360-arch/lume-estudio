@@ -1,0 +1,38 @@
+{
+  "name": "lume/estudio",
+  "description": "Lume Estúdio — portfólio e gestão de ensaios fotográficos.",
+  "type": "project",
+  "require": {
+    "php": "^8.3",
+    "vlucas/phpdotenv": "^5.6",
+    "phpmailer/phpmailer": "^6.9",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-fileinfo": "*",
+    "ext-gd": "*",
+    "ext-mbstring": "*",
+    "ext-zip": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Danny\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "migrate": "@php scripts/migrate.php",
+    "setup": "@php scripts/install.php"
+  },
+  "config": {
+    "platform": {
+      "php": "8.3.0"
+    },
+    "sort-packages": true
+  },
+  "license": "proprietary"
+}

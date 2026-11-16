@@ -1,0 +1,7 @@
+app/vendor/
+.env
+*.log
+app/storage/*
+!app/storage/.gitkeep
+.idea/
+.vscode/
