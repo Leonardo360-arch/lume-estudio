@@ -97,7 +97,8 @@ jobs:
             docker compose exec -T app php scripts/create-admin.php
       - name: Verificar páginas públicas e WebP
         run: |
-          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 http://localhost:8080/ -o /tmp/lume-home.html
+          status=$(curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 http://localhost:8080/ -o /tmp/lume-home.html -w '%{http_code}')
+          test "$status" = 200 || { echo "Home retornou $status, esperado 200"; exit 1; }
           grep -q 'Lume Estúdio' /tmp/lume-home.html
           for path in login.php login-cliente.php; do
             status=$(curl --silent --show-error -o /tmp/lume-login.html -w '%{http_code}' "http://localhost:8080/$path")
